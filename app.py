@@ -1,51 +1,35 @@
-# ================================================
-# 🧮 Streamlit Calculator App
-# ================================================
+# ============================================
+# 🧮 Streamlit Calculator (Advanced Version)
+# ============================================
 import streamlit as st
 
-# --- Page Configuration ---
-st.set_page_config(page_title="🧮 Calculator", page_icon="🧮", layout="centered")
-
+# --- Page Setup ---
+st.set_page_config(page_title="🧮 Advanced Calculator", page_icon="🧮", layout="centered")
 st.title("🧮 Streamlit Calculator")
-st.caption("A simple, interactive calculator built using Streamlit")
+st.caption("Perform basic arithmetic operations easily")
 
-# --- Initialize session state ---
-if "expression" not in st.session_state:
-    st.session_state.expression = ""
+# --- Initialize history ---
+if "history" not in st.session_state:
+    st.session_state.history = []
 
-# --- Display area ---
-st.text_input("Expression", st.session_state.expression, key="display", disabled=True)
+# --- User Inputs ---
+num1 = st.number_input("Enter first number:", step=1.0, format="%.6f")
+num2 = st.number_input("Enter second number:", step=1.0, format="%.6f")
+operation = st.selectbox("Select Operation:", ["Addition (+)", "Subtraction (-)", "Multiplication (×)", "Division (÷)"])
 
-# --- Button press handler ---
-def press(button):
-    if button == "C":
-        st.session_state.expression = ""
-    elif button == "⌫":
-        st.session_state.expression = st.session_state.expression[:-1]
-    elif button == "=":
-        try:
-            # Safe evaluation
-            st.session_state.expression = str(eval(st.session_state.expression))
-        except Exception:
-            st.session_state.expression = "Error"
-    else:
-        st.session_state.expression += button
-
-# --- Calculator buttons layout ---
-buttons = [
-    ["7", "8", "9", "/"],
-    ["4", "5", "6", "*"],
-    ["1", "2", "3", "-"],
-    ["0", ".", "=", "+"],
-    ["C", "⌫"]
-]
-
-# --- Render the buttons ---
-for row in buttons:
-    cols = st.columns(len(row))
-    for i, button in enumerate(row):
-        cols[i].button(button, on_click=press, args=(button,))
-
-# --- Footer ---
-st.markdown("---")
-st.write("✅ Built with ❤️ using [Streamlit](https://streamlit.io)")
+# --- Calculate Result ---
+result = None
+if st.button("Calculate"):
+    try:
+        if operation == "Addition (+)":
+            result = num1 + num2
+        elif operation == "Subtraction (-)":
+            result = num1 - num2
+        elif operation == "Multiplication (×)":
+            result = num1 * num2
+        elif operation == "Division (÷)":
+            if num2 != 0:
+                result = num1 / num2
+            else:
+                st.error("❌ Cannot divide by zero!")
+                result =
